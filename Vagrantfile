@@ -103,6 +103,8 @@ Vagrant.configure("2") do |config|
   config.vm.provision "file", source: "./.ansible.cfg", destination: "~/.ansible.cfg"
   config.vm.provision "file", source: "./MyInventory", destination: "~/.ansible/MyInventory"
   config.vm.provision "file", source: "./clouds.yaml", destination: "~/.config/openstack/clouds.yaml"
+  config.vm.provision "file", source: "./docker-compose.yml", destination: "~/docker-compose.yml"
+  config.vm.provision "file", source: "./my_first_dockerfile", destination: "~/my_first_dockerfile"
   
   # make sure the permissions on the  pem file are not too open.
   # Note, here I show you using inline and privileged: false so the inline

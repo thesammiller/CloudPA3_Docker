@@ -1,0 +1,52 @@
+---
+#
+# Author: Aniruddha Gokhale
+# EECS 4287/5287: Principles of Cloud Computing
+# Created: Fall 2016
+# Modified: Fall 2018
+# Modified: Fall 2020
+#
+# In this playbook we get facts about our local VM using master playbook
+#
+  - name: Get facts of the VM   # This is just for printing out.
+    debug:                      # debug is used for printing information
+       var: ansible_facts       # ansible_facts is a built-in variable
+                                # that stores the collected value
+
+#  - name: Install Kubernetes pt. 1 - gnugp2
+#    apt: name=gnugp2
+#    become: yes
+
+  - name: Install Kubernetes pt. 2 - add repository to file
+    become: yes
+    lineinfile: 
+      dest: /etc/apt/sources.list.d/kubernetes.list
+      line: deb https://apt.kubernetes.io kubernetes-xenial main
+      create: yes
+
+  - name: Install Kubernetes pt. 3 - add-key
+    become: yes
+    command: apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 6A030B21BA07F4FB
+
+  - name: Install Kubernetes pt. 4 - install kubeadm
+    become: yes
+    apt:
+      name: kubeadm
+      update_cache: yes
+
+  - name: Install Kubernetes pt. 4 - kubelet
+    apt: name=kubelet
+    become: yes
+
+  - name: Install Kubernetes pt. 4 - kubectl
+    apt: name=kubectl
+    become: yes
+
+  - name: Install Kubernetes pt. 4 - kubernetes-cni
+    apt: name=kubernetes-cni
+    become: yes
+
+
+
+...
+

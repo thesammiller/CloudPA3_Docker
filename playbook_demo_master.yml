@@ -27,6 +27,9 @@
 
   tasks:    # the task to be performed (here I am showing the effect of include_)
   - include_tasks: tasks/playbook_install_docker_vm.yml
+  - include_tasks: tasks/playbook_install_docker_compose_vm.yml
+  - include_tasks: tasks/playbook_install_kubernetes_vm.yml
+
 #  - include_tasks: tasks/playbook_get_facts_cloud_vm.yml
 
 ...

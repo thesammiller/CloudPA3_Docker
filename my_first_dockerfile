@@ -11,7 +11,7 @@ FROM ubuntu:18.04
 # that the RUN command is non interactive.
 RUN apt-get -y update && apt-get install -y g++ emacs git \
      python3 python3-kafka python3-requests \
-     python3-pip \
+     python3-pip 
 
 # run bash as the final step of starting the container
 CMD /bin/bash

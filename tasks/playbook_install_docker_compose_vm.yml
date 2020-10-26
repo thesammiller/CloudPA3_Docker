@@ -1,0 +1,67 @@
+---
+#
+# Author: Aniruddha Gokhale
+# EECS 4287/5287: Principles of Cloud Computing
+# Created: Fall 2016
+# Modified: Fall 2018
+# Modified: Fall 2020
+#
+# In this playbook we get facts about our local VM using master playbook
+#
+  - name: Get facts of the VM   # This is just for printing out.
+    debug:                      # debug is used for printing information
+       var: ansible_facts       # ansible_facts is a built-in variable
+                                # that stores the collected value
+
+  - name: Print IPv4 data of VM   # This is just for printing out.
+    debug:                      # debug is used for printing information
+       var: ansible_facts['enp0s3']['ipv4']
+                             # ansible_facts here is a huge nested dictionary
+                             # The IPv4 data is deeply embedded inside
+
+  - name: Install Docker Compose pt. 1 - pip3
+    apt: name=python3-pip
+    become: yes
+  
+  - name: Install Docker Compose pt. 1 - python3-dev
+    apt: name=python3-dev
+    become: yes
+
+  - name: Install Docker Compose pt. 1 - libffi-dev
+    apt: name=libffi-dev
+    become: yes
+
+  - name: Install Docker Compose pt. 1 - libssl-dev
+    apt: name=libssl-dev
+    become: yes
+
+  - name: Install Docker Compose pt. 1 - gcc
+    apt: name=gcc
+    become: yes
+
+  - name: Install Docker Compose pt. 1 - libc-dev
+    apt: name=libc-dev
+    become: yes
+
+  - name: Install Docker Compose pt. 1 - make
+    apt: name=make
+    become: yes
+
+  - name: Register Operating System name
+    command: uname -s
+    register: osname
+
+  - name: Register Operating Platform name
+    command: uname -m
+    register: platformname
+
+  - name: Download Docker compose
+    become: yes
+    get_url: 
+      url: "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-{{osname.stdout}}-{{platformname.stdout}}"
+      dest: /usr/local/bin/docker-compose
+      mode: '0755'
+
+
+...
+

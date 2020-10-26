@@ -62,6 +62,20 @@
     apt: name=containerd.io
     become: yes
 
+  - name: Create docker group
+    group:
+      name: docker
+      state: present
+
+  - name: Add vagrant to Docker group
+    become: yes
+    user:
+      name: vagrant
+      group: docker
+
+  - name: docker hello-world test
+    command: docker run hello-world
+
 
 ...
 

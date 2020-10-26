@@ -1,0 +1,67 @@
+---
+#
+# Author: Aniruddha Gokhale
+# EECS 4287/5287: Principles of Cloud Computing
+# Created: Fall 2016
+# Modified: Fall 2018
+# Modified: Fall 2020
+#
+# In this playbook we get facts about our local VM using master playbook
+#
+  - name: Get facts of the VM   # This is just for printing out.
+    debug:                      # debug is used for printing information
+       var: ansible_facts       # ansible_facts is a built-in variable
+                                # that stores the collected value
+
+  - name: Print IPv4 data of VM   # This is just for printing out.
+    debug:                      # debug is used for printing information
+       var: ansible_facts['enp0s3']['ipv4']
+                             # ansible_facts here is a huge nested dictionary
+                             # The IPv4 data is deeply embedded inside
+
+  - name: Install Docker pt. 1 - apt-transport-https
+    apt: name=apt-transport-https
+    become: yes
+  
+  - name: Install Docker pt. 1 - ca-certificates
+    apt: name=ca-certificates
+    become: yes
+
+  - name: Install Docker pt. 1 - gnupg-agent
+    apt: name=gnupg-agent
+    become: yes
+
+  - name: Install Docker pt. 1 - software-properties-common
+    apt: name=software-properties-common
+    become: yes
+
+  - name: Install Docker pt. 2 - apt-key add -
+    become: yes
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      id: 0EBFCD88
+      state: present
+
+  - name: Install Docker pt. 3 - add repository to file
+    become: yes
+    lineinfile: 
+      dest: /etc/apt/sources.list
+      line: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+
+  - name: Install Docker pt. 4 - apt-get install docker
+    become: yes
+    apt:
+      name: docker-ce
+      update_cache: yes
+
+  - name: Install Docker pt. 4 - apt-get docker-ce-cli
+    apt: name=docker-ce-cli
+    become: yes
+
+  - name: Install Docker pt. 4 - apt-get containerd.io
+    apt: name=containerd.io
+    become: yes
+
+
+...
+
